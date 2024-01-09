@@ -1,6 +1,6 @@
 package com.tune.project.aop;
 
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.github.xiaoymin.knife4j.core.util.CollectionUtils;
 import com.tune.project.annotation.AuthCheck;
 import com.tune.project.common.ErrorCode;
 import com.tune.project.exception.BusinessException;

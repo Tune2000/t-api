@@ -1,21 +1,23 @@
 package com.tune.project.controller;
 
+import com.google.gson.Gson;
+import com.tune.project.model.dto.interfaceinfo.InterfaceInfoInvokeRequest;
+import com.tune.project.model.dto.interfaceinfo.InterfaceInfoUpdateRequest;
+import com.tune.project.model.enums.InterfaceInfoStatusEnum;
+import com.tune.tapiclientsdk.client.TApiClient;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tune.project.annotation.AuthCheck;
-import com.tune.project.common.BaseResponse;
-import com.tune.project.common.DeleteRequest;
-import com.tune.project.common.ErrorCode;
-import com.tune.project.common.ResultUtils;
+import com.tune.project.common.*;
 import com.tune.project.constant.CommonConstant;
 import com.tune.project.exception.BusinessException;
 import com.tune.project.model.dto.interfaceinfo.InterfaceInfoAddRequest;
 import com.tune.project.model.dto.interfaceinfo.InterfaceInfoQueryRequest;
-import com.tune.project.model.dto.interfaceinfo.InterfaceInfoUpdateRequest;
 import com.tune.project.model.entity.InterfaceInfo;
 import com.tune.project.model.entity.User;
 import com.tune.project.service.InterfaceInfoService;
 import com.tune.project.service.UserService;
+import com.tune.tapiclientsdk.client.TApiClient;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -26,7 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
- * 接口相关接口
+ * 接口管理
  *
  * @author Tune
  */
@@ -40,6 +42,9 @@ public class InterfanceInfoController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private TApiClient tApiClient;
 
     // 增删改查
 
@@ -126,6 +131,134 @@ public class InterfanceInfoController {
         }
         boolean result = interfaceInfoService.updateById(interfaceInfo);
         return ResultUtils.success(result);
+    }
+
+    /**
+     * 发布
+     *
+     * @param idRequest
+     * @param request
+     * @return
+     */
+    @PostMapping("/online")
+    // 该接口仅管理员可用
+    @AuthCheck(mustRole = "admin")
+    public BaseResponse<Boolean> onlineInterfaceInfo(@RequestBody IdRequest idRequest,
+                                                     HttpServletRequest request) {
+        if (idRequest == null || idRequest.getId() <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        // 1.校验该接口是否存在
+        long id = idRequest.getId();
+        InterfaceInfo oldInterfaceInfo = interfaceInfoService.getById(id);
+        if (oldInterfaceInfo == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+        // 2.判断该接口是否可以调用
+        // 创建一个User对象(这里先模拟一下，搞个假数据)
+        com.tune.tapiclientsdk.model.User user = new com.tune.tapiclientsdk.model.User();
+        // 设置user对象的username属性为"test"
+        user.setUsername("test");
+        // 通过tApiClient的getUsernameByPost方法传入user对象，并将返回的username赋值给username变量
+        String username = tApiClient.getUsernameByPost(user);
+        // 如果username为空或空白字符串
+        if (StringUtils.isBlank(username)) {
+            // 抛出系统错误的业务异常，表示系统内部异常，并附带错误信息"接口验证失败"
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "接口验证失败");
+        }
+        // 创建一个InterfaceInfo对象
+        InterfaceInfo interfaceInfo = new InterfaceInfo();
+        interfaceInfo.setId(id);
+        // 3.修改接口数据库中的状态字段为上线
+        interfaceInfo.setStatus(InterfaceInfoStatusEnum.ONLINE.getValue());
+        // 调用interfaceInfoService的updateById方法，传入interfaceInfo对象，并将返回的结果赋值给result变量
+        boolean result = interfaceInfoService.updateById(interfaceInfo);
+        // 返回一个成功的响应，响应体中携带result值
+        return ResultUtils.success(result);
+    }
+    /**
+     * 下线
+     *
+     * @param idRequest
+     * @param request
+     * @return
+     */
+    @PostMapping("/offline")
+    @AuthCheck(mustRole = "admin")
+    public BaseResponse<Boolean> offlineInterfaceInfo(@RequestBody IdRequest idRequest,
+                                                     HttpServletRequest request) {
+        if (idRequest == null || idRequest.getId() <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        // 1.校验该接口是否存在
+        long id = idRequest.getId();
+        InterfaceInfo oldInterfaceInfo = interfaceInfoService.getById(id);
+        if (oldInterfaceInfo == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+        // 2.判断该接口是否可以调用
+        // 创建一个User对象(这里先模拟一下，搞个假数据)
+        com.tune.tapiclientsdk.model.User user = new com.tune.tapiclientsdk.model.User();
+        // 设置user对象的username属性为"test"
+        user.setUsername("test");
+        // 通过tApiClient的getUsernameByPost方法传入user对象，并将返回的username赋值给username变量
+        String username = tApiClient.getUsernameByPost(user);
+        // 如果username为空或空白字符串
+        if (StringUtils.isBlank(username)) {
+            // 抛出系统错误的业务异常，表示系统内部异常，并附带错误信息"接口验证失败"
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "接口验证失败");
+        }
+        // 创建一个InterfaceInfo对象
+        InterfaceInfo interfaceInfo = new InterfaceInfo();
+        interfaceInfo.setId(id);
+        // 3.修改接口数据库中的状态字段为上线
+        interfaceInfo.setStatus(InterfaceInfoStatusEnum.OFFLINE.getValue());
+        // 调用interfaceInfoService的updateById方法，传入interfaceInfo对象，并将返回的结果赋值给result变量
+        boolean result = interfaceInfoService.updateById(interfaceInfo);
+        // 返回一个成功的响应，响应体中携带result值
+        return ResultUtils.success(result);
+    }
+
+    /**
+     * 测试调用
+     *
+     * @param interfaceInfoInvokeRequest
+     * @param request
+     * @return
+     */
+    @PostMapping("/invoke")
+    public BaseResponse<Object> invokeInterfaceInfo(@RequestBody InterfaceInfoInvokeRequest interfaceInfoInvokeRequest,
+                                                    HttpServletRequest request) {
+        // 检查请求对象是否为空或者接口id是否小于等于0
+        if (interfaceInfoInvokeRequest == null || interfaceInfoInvokeRequest.getId() <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        // 获取接口id
+        long id = interfaceInfoInvokeRequest.getId();
+        // 获取用户请求参数
+        String userRequestParams = interfaceInfoInvokeRequest.getUserRequestParams();
+        // 判断是否存在
+        InterfaceInfo oldInterfaceInfo = interfaceInfoService.getById(id);
+        if (oldInterfaceInfo == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+        // 检查接口状态是否为下线状态
+        if (oldInterfaceInfo.getStatus() == InterfaceInfoStatusEnum.OFFLINE.getValue()) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "接口已关闭");
+        }
+        // 获取当前登录用户的ak和sk，这样相当于用户自己的这个身份去调用，
+        User loginUser = userService.getLoginUser(request);
+        String accessKey = loginUser.getAccessKey();
+        String secretKey = loginUser.getSecretKey();
+        //进行测试调用，解析传递过来的参数。
+        TApiClient tempClient = new TApiClient(accessKey, secretKey);
+        Gson gson = new Gson();
+        // 将用户请求参数转换为com.tune.tapiclientsdk.model.User对象
+        com.tune.tapiclientsdk.model.User user = gson.fromJson(userRequestParams, com.tune.tapiclientsdk.model.User.class);
+        // 调用TApiClient的getUsernameByPost方法，传入用户对象，获取用户名
+        String usernameByPost = tempClient.getUsernameByPost(user);
+        // 返回成功响应，并包含调用结果
+        return ResultUtils.success(usernameByPost);
     }
 
     /**
