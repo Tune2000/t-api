@@ -1,0 +1,40 @@
+server:
+  port: 8090
+spring:
+  cloud:
+    gateway:
+      default-filters:
+        - AddResponseHeader=source, tune
+      routes:
+        - id: api_route
+          uri: http://localhost:8123
+          # 匹配所有以"/api/"开头的路径
+          predicates:
+            - Path=/api/**
+
+#        - id: add_request_header_route
+#          uri: http://localhost:8123
+#          predicates:
+#            - Path=/api/**
+
+#          filters:
+#            - AddRequestHeader=tune, blue
+#            - AddRequestParameter=name, tune
+#            # 降级规则，原本的接口访问失败跳转到下面的url
+#            - name: CircuitBreaker
+#              args:
+#                name: myCircuitBreaker
+#                fallbackUri: forward:/fallback
+#
+#        - id: tune-fallback
+#          uri: https://baidu.com
+#          predicates:
+#            - Path=/fallback
+
+# gateway的日志级别设置为"trace"(最小的日志也输出)
+logging:
+  level:
+    org:
+      springframework:
+        cloud:
+          gateway: trace
