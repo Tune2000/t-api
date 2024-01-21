@@ -21,6 +21,12 @@
             <groupId>org.apache.dubbo</groupId>
             <artifactId>dubbo</artifactId>
             <version>3.0.9</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>gson</artifactId>
+                    <groupId>com.google.code.gson</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.alibaba.nacos</groupId>
@@ -30,6 +36,11 @@
         <dependency>
             <groupId>com.tune</groupId>
             <artifactId>tapi-client-sdk</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tune</groupId>
+            <artifactId>tapi-common</artifactId>
             <version>0.0.1</version>
         </dependency>
         <dependency>

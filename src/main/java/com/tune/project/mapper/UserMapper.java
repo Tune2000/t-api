@@ -1,7 +1,7 @@
 package com.tune.project.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.tune.project.model.entity.User;
+import com.tune.tapicommon.model.entity.User;
 
 /**
  * @Entity com.tune.project.model.domain.User

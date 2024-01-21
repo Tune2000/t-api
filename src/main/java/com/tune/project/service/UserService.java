@@ -1,7 +1,7 @@
 package com.tune.project.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.tune.project.model.entity.User;
+import com.tune.tapicommon.model.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
 

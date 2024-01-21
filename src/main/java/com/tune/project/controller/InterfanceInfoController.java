@@ -13,11 +13,11 @@ import com.tune.project.constant.CommonConstant;
 import com.tune.project.exception.BusinessException;
 import com.tune.project.model.dto.interfaceinfo.InterfaceInfoAddRequest;
 import com.tune.project.model.dto.interfaceinfo.InterfaceInfoQueryRequest;
-import com.tune.project.model.entity.InterfaceInfo;
-import com.tune.project.model.entity.User;
+
 import com.tune.project.service.InterfaceInfoService;
 import com.tune.project.service.UserService;
-import com.tune.tapiclientsdk.client.TApiClient;
+import com.tune.tapicommon.model.entity.InterfaceInfo;
+import com.tune.tapicommon.model.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;

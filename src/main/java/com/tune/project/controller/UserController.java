@@ -9,7 +9,7 @@ import com.tune.project.common.ErrorCode;
 import com.tune.project.common.ResultUtils;
 import com.tune.project.exception.BusinessException;
 import com.tune.project.model.dto.user.*;
-import com.tune.project.model.entity.User;
+import com.tune.tapicommon.model.entity.User;
 import com.tune.project.model.vo.UserVO;
 import com.tune.project.service.UserService;
 import org.apache.commons.lang3.StringUtils;

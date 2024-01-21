@@ -1,7 +1,7 @@
 package com.tune.project.service;
 
-import com.tune.project.model.entity.InterfaceInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.tune.tapicommon.model.entity.InterfaceInfo;
 
 /**
 * @author Tune

@@ -4,8 +4,9 @@ import com.github.xiaoymin.knife4j.core.util.CollectionUtils;
 import com.tune.project.annotation.AuthCheck;
 import com.tune.project.common.ErrorCode;
 import com.tune.project.exception.BusinessException;
-import com.tune.project.model.entity.User;
+
 import com.tune.project.service.UserService;
+import com.tune.tapicommon.model.entity.User;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

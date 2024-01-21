@@ -1,7 +1,9 @@
 package com.tune.project.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.tune.project.model.entity.UserInterfaceInfo;
+import com.tune.tapicommon.model.entity.UserInterfaceInfo;
+
+import java.util.List;
 
 /**
 * @author Tune
@@ -10,7 +12,7 @@ import com.tune.project.model.entity.UserInterfaceInfo;
 * @Entity com.tune.project.model.entity.UserInterfaceInfo
 */
 public interface UserInterfaceInfoMapper extends BaseMapper<UserInterfaceInfo> {
-
+    List<UserInterfaceInfo> listTopInvokeInterfaceInfo(int limit);
 }
 
 

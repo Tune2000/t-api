@@ -4,9 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tune.project.common.ErrorCode;
 import com.tune.project.exception.BusinessException;
-import com.tune.project.model.entity.UserInterfaceInfo;
 import com.tune.project.service.UserInterfaceInfoService;
 import com.tune.project.mapper.UserInterfaceInfoMapper;
+import com.tune.tapicommon.model.entity.UserInterfaceInfo;
 import org.springframework.stereotype.Service;
 
 /**

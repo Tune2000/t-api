@@ -1,6 +1,6 @@
 package com.tune.project.mapper;
 
-import com.tune.project.model.entity.InterfaceInfo;
+import com.tune.tapicommon.model.entity.InterfaceInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
